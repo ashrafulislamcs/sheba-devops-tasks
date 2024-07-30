@@ -1,0 +1,26 @@
+In my current company, we connect to our RDS instance locally by adding my 
+local machine's IP address to the RDS security group. However, this method may 
+not be the most secure. A better practice for securing access to RDS is to 
+use a multi-layered approach involving proxies or jump hosts. 
+Here are recommended practices is that I have followed my previous organizations.
+
+Use a Jump Host: 
+Set up a secure jump host (bastion host) in a private subnet within your VPC. 
+Access the RDS instance through this jump host, which should have strict security 
+controls and monitoring.
+
+Set Up a Bastion Host
+
+Launch EC2 Instance: Create an EC2 instance in a public subnet within the same VPC as your RDS instance.
+
+Configure Security Group:
+Allow inbound SSH (port 22) from your local IP.
+
+Ensure outbound access to RDS port (e.g., 3306 for MySQL).
+Configure RDS Security Group
+
+Security Group for RDS: Allow inbound traffic on port 3306 from the bastion host’s security group.
+Access RDS Locally
+Use SSH to connect to the bastion host.
+#mysql -h 127.0.0.1 -P 3306 -u your_rds_username -p
+
